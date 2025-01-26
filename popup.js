@@ -200,11 +200,14 @@ async function loadHistoryAsync() {
                 // 解码URI编码内容
                 const decodedContent = decodeURIComponent(rawContent);
                 
-                // 直接设置输入框内容并格式化
-                elements.input.value = decodedContent;
+                // 添加外层大括号确保完整JSON格式
+                const jsonContent = decodedContent.startsWith('{') ? decodedContent : `{${decodedContent}}`;
+                elements.input.value = jsonContent;
                 try {
-                  // 直接调用格式化函数保留完整JSON结构
-                  formatJSON(elements);
+                  // 重新解析并格式化完整JSON结构
+                  const parsed = JSON.parse(jsonContent);
+                  const formatted = JSON.stringify(parsed, null, 2);
+                  elements.output.innerHTML = syntaxHighlight(formatted);
                 } catch (e) {
                   // 保留原始内容并显示错误
                   showError(`历史记录格式错误: ${e.message}`);
@@ -338,9 +341,9 @@ function saveToHistory(formatted) {
       history = [];
     }
 
-    // 添加新记录
+    // 保存原始输入内容而非格式化后的内容
     history.push({
-      content: formatted,
+      content: elements.input.value.trim(),
       timestamp: new Date().toISOString()
     });
 
