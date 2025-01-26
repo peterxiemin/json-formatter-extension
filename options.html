@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>JSON Formatter Options</title>
+  <style>
+    body {
+      width: 400px;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+    }
+    .option-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+    }
+    select, input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 12px;
+    }
+    button {
+      padding: 10px 20px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <h2>JSON Formatter Settings</h2>
+  
+  <div class="option-group">
+    <label for="theme">Color Theme:</label>
+    <select id="theme">
+      <option value="light">Light</option>
+      <option value="dark">Dark</option>
+    </select>
+  </div>
+
+  <div class="option-group">
+    <label for="indent-size">Indentation Size:</label>
+    <input type="number" id="indent-size" min="2" max="8" step="2" value="2">
+  </div>
+
+  <button id="save-btn">Save Settings</button>
+
+  <script src="options.js"></script>
+</body>
+</html>

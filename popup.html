@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>JSON Formatter</title>
+  <style>
+    :root {
+      --bg-color: #ffffff;
+      --text-color: #333333;
+      --border-color: #dddddd;
+      --button-bg: #4CAF50;
+    }
+    
+    [data-theme="dark"] {
+      --bg-color: #2d2d2d;
+      --text-color: #e0e0e0;
+      --border-color: #444444;
+      --button-bg: #2196F3;
+    }
+
+    body {
+      width: 400px;
+      padding: 10px;
+      font-family: Arial, sans-serif;
+      background: var(--bg-color);
+      color: var(--text-color);
+    }
+    textarea {
+      width: 100%;
+      height: 150px;
+      margin-bottom: 10px;
+    }
+    #formatted-json {
+      white-space: pre;
+      font-family: monospace;
+      background: var(--bg-color);
+      padding: 10px;
+      border: 1px solid var(--border-color);
+      max-height: 300px;
+      overflow: auto;
+    }
+    button {
+      padding: 8px 16px;
+      background: var(--button-bg);
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    button:hover {
+      background: #45a049;
+    }
+    .error {
+      color: #ff4444;
+      margin-top: 10px;
+    }
+    
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.8);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 4px;
+      animation: fadeInOut 2s;
+    }
+    
+    @keyframes fadeInOut {
+      0% { opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    /* JSON Syntax Highlighting */
+    .key { color: #d9534f; }
+    .string { color: #5cb85c; }
+    .number { color: #5bc0de; }
+    .boolean { color: #f0ad4e; }
+    .null { color: #777; }
+
+    .history-section {
+      margin-top: 20px;
+      border-top: 1px solid var(--border-color);
+      padding-top: 15px;
+    }
+    
+    .history-section h3 {
+      margin: 0 0 10px;
+      font-size: 14px;
+      color: var(--text-color);
+    }
+    
+    #history-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    #history-list li {
+      padding: 8px 12px;
+      margin: 4px 0;
+      background: rgba(0,0,0,0.05);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* 新增内容加载动画 */
+    .content-loaded {
+      box-shadow: 0 0 0 2px rgba(76,175,80,0.3);
+      transition: box-shadow 0.3s ease;
+    }
+
+    /* 优化输入框高度调整 */
+    textarea {
+      min-height: 60px;
+      transition: height 0.2s ease;
+    }
+    
+    #history-list li:hover {
+      background: rgba(0,0,0,0.1);
+      transform: translateX(5px);
+    }
+    
+    #history-list pre {
+      margin: 0;
+      font-family: monospace;
+      font-size: 12px;
+      color: var(--text-color);
+      flex-grow: 1;
+    }
+    
+    .history-time {
+      font-size: 10px;
+      opacity: 0.7;
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div id="error-container"></div>
+  <h2>JSON Formatter</h2>
+  <textarea id="json-input" placeholder="Paste your JSON here..."></textarea>
+  
+  <div class="controls">
+    <label for="indent-size">Indent Size:</label>
+    <select id="indent-size">
+      <option value="2">2 spaces</option>
+      <option value="4">4 spaces</option>
+      <option value="8">8 spaces</option>
+    </select>
+  </div>
+  
+  <div class="button-group">
+    <button id="format-btn">Format JSON</button>
+    <button id="compress-btn">Compress JSON</button>
+    <button id="export-btn">Export JSON</button>
+  </div>
+  <div id="formatted-json"></div>
+  <div id="error-message" class="error"></div>
+  <div class="history-section">
+    <h3>Recent History</h3>
+    <ul id="history-list"></ul>
+  </div>
+
+  <div id="debug-panel" style="margin-top: 20px; display: none;">
+    <h3>Debug Info</h3>
+    <pre id="debug-output"></pre>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
